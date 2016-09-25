@@ -1,0 +1,22 @@
+﻿@model IList<TicketingSystem.Models.Ticket>
+@{
+    ViewBag.Title = "All Tickets";
+}
+
+<h2>All Tickets</h2>
+
+<div class="row">
+    @foreach (var ticket in Model)
+    {
+        <div>
+            <strong>Title: </strong> @ticket.Title
+        </div>
+        <div>
+            <strong>Description: </strong> @ticket.Description
+        </div>
+        <div>
+            <strong>Priority: </strong> @ticket.Priority
+        </div>
+        <br />
+    }
+</div>

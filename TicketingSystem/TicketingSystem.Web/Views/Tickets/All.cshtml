@@ -1,0 +1,74 @@
+﻿@using TicketingSystem.Web.ViewModels.Tickets
+@model  int?
+@{
+    ViewBag.Title = "All";
+}
+
+@using (Html.BeginForm("All", "Tickets", FormMethod.Get))
+{
+    @(Html.Kendo()
+        .DropDownList()
+        .Name("categoryId")
+        .HtmlAttributes(new { style = "width: 100%" })
+        .DataTextField("Text")
+        .DataValueField("Value")
+        .OptionLabel("Choose category")
+        .DataSource(dataSource =>
+        {
+            dataSource.Read(read => read.Action("GetCategories", "Tickets"));
+        }))
+
+    <input type="submit" class="btn btn btn-default" />
+}
+<br />
+<br />
+
+<div class="container">
+    <div class="row k-header">
+        <div class="col-md-3 text-center">
+            <h4>Title</h4>
+        </div>
+        <div class="col-md-4 text-center">
+            <h4>Category</h4>
+        </div>
+        <div class="col-md-2 text-center">
+            <h4>Author</h4>
+        </div>
+        <div class="col-md-2 text-center">
+            <h4>Priority</h4>
+        </div>
+    </div>
+    <br />
+</div>
+
+@(Html.Kendo()
+    .ListView<ListTicketViewModel>()
+    .TagName("div")
+    .Name("All-tickets")
+    .Pageable()
+    .ClientTemplateId("all-tickets-template")
+    .DataSource(dataSource =>
+    {
+        dataSource
+            .ServerOperation(true)
+            .PageSize(5)
+            .Read(read => read.Action("ReadTickets", "Tickets", new { category = Model }));
+    }))
+
+<script id="all-tickets-template" type="text/x-kendo-templ">
+    <div class="row">
+        <div class="col-md-3 text-center">
+            <a href="/Tickets/Details/#=Id #"> #=TicketTitle #</a>
+        </div>
+        <div class="col-md-3 text-center">
+            #=CategoryName #
+        </div>
+        <div class="col-md-2 text-center">
+            #=AuthorName #
+        </div>
+        <div class="col-md-2 text-center">
+            #=Priority #
+        </div>
+    </div>
+    <br />
+</script>
